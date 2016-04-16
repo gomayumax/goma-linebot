@@ -39,11 +39,9 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       $rss = file_get_contents($url);
       $xml = simplexml_load_string($rss);
 
-      $word_list = [];
-      $pos_list = [];
-      foreach($xml->ma_result->word_list->word as $item) {
-        $pos_list[] = $item->pos;
-        $word_list[] = $ite->word;
+      foreach($xml->ma_result->word_list->word as $key => $item) {
+        $pos_list[$key] = $item->pos;
+        $word_list[$key] = $ite->word;
       } 
 
       if($key = array_search('感動詞', $pos_list)) {
@@ -51,7 +49,7 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       } elseif ($key = array_search('名詞', $pos_list)) {
         $return_text = $word_list[$key] . 'なんだー';
       }
-      $bot->sendText($from, sprintf('%s', $item->pos)); 
+      $bot->sendText($from, sprintf('%s', $return_text)); 
     }
   }
   return 0;
