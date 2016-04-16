@@ -58,7 +58,7 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       } elseif(in_array('名詞', $pos_list)) {
         $key = array_search('名詞', $pos_list);
         $return_text = $base_list[$key] . 'なんだね';
-      } elseif(in_array('つらい', $base_list) || in_array('眠い', $base_list) || in_array('ねむい', $base_list) || in_array('つらい', $base_list)) {
+      } elseif(in_array('つらい', $base_list) || in_array('眠い', $base_list) || in_array('ねむい', $base_list) || in_array('辛い', $base_list)) {
         $return_text = '頑張ってるんだね';
       }
       $bot->sendText($from, sprintf('%s', $return_text)); 
