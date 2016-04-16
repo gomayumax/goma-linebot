@@ -31,9 +31,26 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
     $content = $obj['content'];
 
     if ($content['text']) {
-      $pos = $this->parseString($content['text']);
+      //      $pos = $this->parseString($content['text']);
+      $query = $content['text'];
+      $apiKey = "dj0zaiZpPUFUaUtaWHZaQmc3QyZzPWNvbnN1bWVyc2VjcmV0Jng9NjE-";
+
+      $url = "http://jlp.yahooapis.jp/MAService/V1/parse?appid=" . $apiKey . "&sentence=" . $query;
+
+      $rss = file_get_contents($url);
+      $xml = simplexml_load_string($rss);
+
+      $word_list = [];
+      $pos_list = [];
+      foreach($xml->ma_result->word_list->word as $item) {
+        //echo $item->surface . " " . $item->pos;
+        //echo "<br />";
+        $pos_list[] = $item->pos;
+      } 
+
+      var_dump($pos_list);
       //$bot->sendText($from, sprintf('%sじゃない', $content['text'])); 
-      $bot->sendText($from, sprintf('%sじゃない', $pos)); 
+      $bot->sendText($from, sprintf('%sじゃない', $item->pos)); 
     }
   }
 
@@ -42,20 +59,3 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
 
 $app->run();
 
-
-
-public function parseString($text) {
-  $query = "$text";
-  $apiKey = "dj0zaiZpPUFUaUtaWHZaQmc3QyZzPWNvbnN1bWVyc2VjcmV0Jng9NjE-";
-
-  $url = "http://jlp.yahooapis.jp/MAService/V1/parse?appid=" . $apiKey . "&sentence=" . $query;
-
-  $rss = file_get_contents($url);
-  $xml = simplexml_load_string($rss);
-
-  foreach($xml->ma_result->word_list->word as $item) {
-    //echo $item->surface . " " . $item->pos;
-    //echo "<br />";
-    return $item->pos;
-  } 
-}
