@@ -39,12 +39,14 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       $rss = file_get_contents($url);
       $xml = simplexml_load_string($rss);
       
-      $pos_list = [];
-      $word_list = [];
+      $pos_list = array();
+      $word_list = array();
 
+      $i = 0;
       foreach($xml->ma_result->word_list->word as $item) {
-        $pos_list[] = $item->pos;
-        $word_list[] = $item->surface;
+        $pos_list[$i] = $item->pos;
+        $word_list[$i] = $item->surface;
+        $i++;
       }
 
       
