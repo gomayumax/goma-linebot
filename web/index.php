@@ -41,13 +41,12 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
 
       foreach($xml->ma_result->word_list->word as $key => $item) {
         $pos_list[$key] = $item->pos;
-        $word_list[$key] = $ite->word;
-      } 
+        $word_list[$key] = $item->word;
+      }
 
-      if($key = array_search('感動詞', $pos_list)) {
+      $key = array_search('感動詞', $pos_list);
+      if($key) {
         $return_text = $word_list[$key];
-      } elseif ($key = array_search('名詞', $pos_list)) {
-        $return_text = $word_list[$key] . 'なんだー';
       }
       $bot->sendText($from, sprintf('%s', $return_text)); 
     }
