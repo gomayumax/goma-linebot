@@ -38,6 +38,9 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
 
       $rss = file_get_contents($url);
       $xml = simplexml_load_string($rss);
+      
+      $pos_list = array();
+      $word_list = array();
 
       foreach($xml->ma_result->word_list->word as $key => $item) {
         $pos_list[$key] = $item->pos;
