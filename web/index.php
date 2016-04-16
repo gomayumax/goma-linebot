@@ -31,7 +31,6 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
     $content = $obj['content'];
 
     if ($content['text']) {
-      //      $pos = $this->parseString($content['text']);
       $query = $content['text'];
       $apiKey = "dj0zaiZpPUFUaUtaWHZaQmc3QyZzPWNvbnN1bWVyc2VjcmV0Jng9NjE-";
 
@@ -43,17 +42,18 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       $word_list = [];
       $pos_list = [];
       foreach($xml->ma_result->word_list->word as $item) {
-        //echo $item->surface . " " . $item->pos;
-        //echo "<br />";
         $pos_list[] = $item->pos;
+        $word_list = $ite->word;
       } 
 
-      var_dump($pos_list);
-      //$bot->sendText($from, sprintf('%sじゃない', $content['text'])); 
-      $bot->sendText($from, sprintf('%sじゃない', $item->pos)); 
+      if($key = array_search('感動詞', $pos_list)) {
+        $return_text = $word_list[$key];
+      } elseif ($key = array_search('名詞', $pos_list)) {
+        $return_text = $word_list[$key] . 'なんだー';
+      }
+      $bot->sendText($from, sprintf('%s', $return_text)); 
     }
   }
-
   return 0;
 });
 
