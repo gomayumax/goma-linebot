@@ -34,28 +34,32 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       $query = $content['text'];
       $apiKey = "dj0zaiZpPUFUaUtaWHZaQmc3QyZzPWNvbnN1bWVyc2VjcmV0Jng9NjE-";
 
-      $url = "http://jlp.yahooapis.jp/MAService/V1/parse?appid=" . $apiKey . "&sentence=" . $query;
+      $url = "http://jlp.yahooapis.jp/MAService/V1/parse?appid=" . $apiKey . "&sentence=" . $query ."&response=surface,reading,pos,baseform,feature";
 
       $rss = file_get_contents($url);
       $xml = simplexml_load_string($rss);
       
       $pos_list = array();
       $word_list = array();
+      $base_list = array();
 
       $i = 0;
       foreach($xml->ma_result->word_list->word as $item) {
         $pos_list[$i] = $item->pos;
         $word_list[$i] = $item->surface;
+        $base_list[$i] = $item->baseform;
         $i++;
       }
 
      $return_text = 'hoge'; 
       if(in_array('感動詞', $pos_list)) {
         $key = array_search('感動詞', $pos_list);
-        $return_text = $word_list[$key];
+        $return_text = $base_list[$key];
       } elseif(in_array('名詞', $pos_list)) {
         $key = array_search('名詞', $pos_list);
-        $return_text = $word_list[$key] . 'なんだね';
+        $return_text = $base_list[$key] . 'なんだね';
+      } elseif(in_array('つらい', $base_list) || in_array('眠い', $base_list) || in_array('ねむい', $base_list) || in_array('つらい', $base_list)) {
+        $return_text = '頑張ってるんだね';
       }
       $bot->sendText($from, sprintf('%s', $return_text)); 
     }
