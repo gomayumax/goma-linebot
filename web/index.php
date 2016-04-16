@@ -43,7 +43,7 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       $pos_list = [];
       foreach($xml->ma_result->word_list->word as $item) {
         $pos_list[] = $item->pos;
-        $word_list = $ite->word;
+        $word_list[] = $ite->word;
       } 
 
       if($key = array_search('感動詞', $pos_list)) {
