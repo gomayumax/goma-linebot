@@ -49,10 +49,12 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
         $i++;
       }
 
-      
-      if($key = array_search('感動詞', $pos_list)) {
+     $return_text = 'hoge'; 
+      if(in_array('感動詞', $pos_list)) {
+        $key = array_search('感動詞', $pos_list);
         $return_text = $word_list[$key];
-      } elseif($key = array_search('名詞', $pos_list)) {
+      } elseif(in_array('名詞', $pos_list)) {
+        $key = array_search('名詞', $pos_list);
         $return_text = $word_list[$key] . 'なんだね';
       }
       $bot->sendText($from, sprintf('%s', $return_text)); 
