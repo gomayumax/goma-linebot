@@ -51,7 +51,7 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
       } elseif ($key = array_search('名詞', $pos_list)) {
         $return_text = $word_list[$key] . 'なんだー';
       }
-      $bot->sendText($from, sprintf('%s', $return_text)); 
+      $bot->sendText($from, sprintf('%s', $item->pos)); 
     }
   }
   return 0;
