@@ -51,7 +51,7 @@ $app->post('/callback', function (Request $request) use ($app, $bot) {
         $i++;
       }
 
-     $return_text = 'hoge'; 
+     $return_text = 'うんうん'; 
       if(in_array('感動詞', $pos_list)) {
         $key = array_search('感動詞', $pos_list);
         $return_text = $base_list[$key];
